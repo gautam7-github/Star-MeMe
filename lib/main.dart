@@ -8,31 +8,31 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final List starWarsMemes = [
-    "images/memes/1.jpg",
-    "images/memes/2.jpg",
-    "images/memes/3.jpg",
-    "images/memes/4.jpg",
-    "images/memes/5.jpg",
-    "images/memes/6.jpg",
-    "images/memes/7.jpg",
-    "images/memes/8.jpg",
-    "images/memes/9.jpg",
-    "images/memes/10.jpg",
-    "images/memes/11.jpg",
-    "images/memes/12.jpg",
-    "images/memes/13.jpg",
-    "images/memes/14.jpg",
-    "images/memes/15.jpg",
-    "images/memes/16.jpg",
-    "images/memes/17.jpg",
-    "images/memes/18.jpg",
-    "images/memes/19.jpg",
-    "images/memes/20.jpg",
-    "images/memes/21.jpg",
-    "images/memes/22.jpg",
-    "images/memes/23.jpg",
-    "images/memes/24.jpg",
-    "images/memes/25.jpg",
+    "assets/memes/1.jpg",
+    "assets/memes/2.jpg",
+    "assets/memes/3.jpg",
+    "assets/memes/4.jpg",
+    "assets/memes/5.jpg",
+    "assets/memes/6.jpg",
+    "assets/memes/7.jpg",
+    "assets/memes/8.jpg",
+    "assets/memes/9.jpg",
+    "assets/memes/10.jpg",
+    "assets/memes/11.jpg",
+    "assets/memes/12.jpg",
+    "assets/memes/13.jpg",
+    "assets/memes/14.jpg",
+    "assets/memes/15.jpg",
+    "assets/memes/16.jpg",
+    "assets/memes/17.jpg",
+    "assets/memes/18.jpg",
+    "assets/memes/19.jpg",
+    "assets/memes/20.jpg",
+    "assets/memes/21.jpg",
+    "assets/memes/22.jpg",
+    "assets/memes/23.jpg",
+    "assets/memes/24.jpg",
+    "assets/memes/25.jpg",
   ];
   @override
   Widget build(BuildContext context) {
@@ -60,11 +60,13 @@ class MyApp extends StatelessWidget {
           ),
           elevation: 2,
         ),
-        body: ListView.builder(
-          itemCount: starWarsMemes.length,
-          itemBuilder: (BuildContext context, int index) {
-            return smallImage(index);
-          },
+        body: SafeArea(
+          child: ListView.builder(
+            itemCount: starWarsMemes.length,
+            itemBuilder: (BuildContext context, int index) {
+              return smallImage(index);
+            },
+          ),
         ),
       ),
     );
