@@ -34,9 +34,8 @@ class _MyAppState extends State<MyApp> {
       ),
       image: Image(
         image: AssetImage('assets/icons/splash_icon.png'),
-        height: 1024,
-        width: 1024,
       ),
+      photoSize: 64,
       backgroundColor: Colors.black,
       loaderColor: Colors.yellow,
     );
@@ -119,9 +118,12 @@ class Home extends StatelessWidget {
                 padding: const EdgeInsets.all(12.0),
                 child: Card(
                   color: Colors.black,
-                  child: Image.asset(
-                    starWarsMemes[index],
-                    fit: BoxFit.scaleDown,
+                  child: Container(
+                    color: Colors.black,
+                    child: Image.asset(
+                      starWarsMemes[index],
+                      fit: BoxFit.scaleDown,
+                    ),
                   ),
                 ),
               ),
