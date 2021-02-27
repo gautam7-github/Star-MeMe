@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
+      title: 'Star Meme',
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      seconds: 7,
+      navigateAfterSeconds: Home(),
+      title: Text(
+        'Star Meme',
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'Pricedown',
+          fontWeight: FontWeight.bold,
+          fontSize: 48.0,
+        ),
+      ),
+      image: Image(
+        image: AssetImage('assets/icons/splash_icon.png'),
+        height: 1024,
+        width: 1024,
+      ),
+      backgroundColor: Colors.black,
+      loaderColor: Colors.yellow,
+    );
+  }
+}
+
+class Home extends StatelessWidget {
   final List starWarsMemes = [
     "assets/memes/1.jpg",
     "assets/memes/2.jpg",
@@ -36,37 +74,35 @@ class MyApp extends StatelessWidget {
   // 587D71 ED6A5A
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.blueGrey[900],
-          title: Text(
-            "MeMe HeHe",
-            style: TextStyle(
-              fontFamily: 'PriceDown',
-              fontSize: 32,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          "Star Meme",
+          style: TextStyle(
+            fontFamily: 'PriceDown',
+            fontSize: 32,
           ),
-          leading: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image(
-              image: AssetImage('assets/icons/appBar_icon.png'),
-              color: Colors.white,
-              height: 64,
-              width: 64,
-              fit: BoxFit.scaleDown,
-            ),
-          ),
-          elevation: 2,
         ),
-        body: SafeArea(
-          child: ListView.builder(
-            itemCount: starWarsMemes.length,
-            itemBuilder: (BuildContext context, int index) {
-              return smallImage(index);
-            },
+        leading: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Image(
+            image: AssetImage('assets/icons/appBar_icon.png'),
+            color: Colors.white,
+            height: 64,
+            width: 64,
+            fit: BoxFit.scaleDown,
           ),
+        ),
+        elevation: 2,
+      ),
+      body: SafeArea(
+        child: ListView.builder(
+          itemCount: starWarsMemes.length,
+          itemBuilder: (BuildContext context, int index) {
+            return smallImage(index);
+          },
         ),
       ),
     );
@@ -74,14 +110,15 @@ class MyApp extends StatelessWidget {
 
   Widget smallImage(int index) => FullScreenWidget(
         child: Container(
-          color: Color(0xFF587D71),
+          color: Colors.black,
           child: Center(
             child: Hero(
               transitionOnUserGestures: true,
-              tag: "smallImage",
+              tag: "smallImage$index",
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Card(
+                  color: Colors.black,
                   child: Image.asset(
                     starWarsMemes[index],
                     fit: BoxFit.scaleDown,
