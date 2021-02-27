@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 
 void main() {
@@ -34,6 +33,7 @@ class MyApp extends StatelessWidget {
     "assets/memes/24.jpg",
     "assets/memes/25.jpg",
   ];
+  // 587D71 ED6A5A
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           leading: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Image(
-              image: AssetImage('images/icons/appBar_icon.png'),
+              image: AssetImage('assets/icons/appBar_icon.png'),
               color: Colors.white,
               height: 64,
               width: 64,
@@ -73,16 +73,19 @@ class MyApp extends StatelessWidget {
   }
 
   Widget smallImage(int index) => FullScreenWidget(
-        child: Center(
-          child: Hero(
-            transitionOnUserGestures: true,
-            tag: "smallImage",
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Card(
-                child: Image.asset(
-                  starWarsMemes[index],
-                  fit: BoxFit.scaleDown,
+        child: Container(
+          color: Color(0xFF587D71),
+          child: Center(
+            child: Hero(
+              transitionOnUserGestures: true,
+              tag: "smallImage",
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Card(
+                  child: Image.asset(
+                    starWarsMemes[index],
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
               ),
             ),
