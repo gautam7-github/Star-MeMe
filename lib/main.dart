@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'dart:async';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.green,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -21,12 +32,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 7,
+      seconds: 3,
       navigateAfterSeconds: Home(),
       title: Text(
         'Star Meme',
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.yellow,
           fontFamily: 'Pricedown',
           fontWeight: FontWeight.bold,
           fontSize: 48.0,
@@ -42,7 +53,12 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => new _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final List starWarsMemes = [
     "assets/memes/1.jpg",
     "assets/memes/2.jpg",
@@ -108,21 +124,49 @@ class Home extends StatelessWidget {
   }
 
   Widget smallImage(int index) => FullScreenWidget(
-        child: Container(
-          color: Colors.black,
-          child: Center(
-            child: Hero(
-              transitionOnUserGestures: true,
-              tag: "smallImage$index",
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Card(
-                  color: Colors.black,
-                  child: Container(
+        child: SafeArea(
+          child: Container(
+            color: Colors.black,
+            child: Center(
+              child: Hero(
+                transitionOnUserGestures: true,
+                tag: "smallImage$index",
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Card(
+                    elevation: 4,
                     color: Colors.black,
-                    child: Image.asset(
-                      starWarsMemes[index],
-                      fit: BoxFit.scaleDown,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          color: Colors.black,
+                          child: Image.asset(
+                            starWarsMemes[index],
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        MaterialButton(
+                          hoverColor: Colors.blueGrey,
+                          elevation: 8,
+                          enableFeedback: true,
+                          child: Icon(
+                            Icons.share_rounded,
+                            color: Colors.white,
+                          ),
+                          onLongPress: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "SHARE THIS MEME BY TAPPING THE ICON",
+                                ),
+                              ),
+                            );
+                          },
+                          onPressed: () async => await _shareimage(index),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -131,4 +175,20 @@ class Home extends StatelessWidget {
           ),
         ),
       );
+  Future<void> _shareimage(int index) async {
+    try {
+      final ByteData bytes = await rootBundle.load(
+        'assets/memes/${index + 1}.jpg',
+      );
+      await Share.file(
+        ' * Star Meme * ',
+        'meme${index}star.jpg',
+        bytes.buffer.asUint8List(),
+        'image/jpg',
+        text: 'Star Meme',
+      );
+    } catch (e) {
+      print('error: $e');
+    }
+  }
 }
