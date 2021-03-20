@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:full_screen_image/full_screen_image.dart';
-import 'package:splashscreen/splashscreen.dart';
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:flutter/services.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:full_screen_image/full_screen_image.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Colors.green,
+      statusBarColor: Colors.black,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarDividerColor: Colors.yellow,
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.light,
     ),
@@ -123,65 +126,69 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget smallImage(int index) => FullScreenWidget(
-        child: SafeArea(
-          child: Container(
-            color: Colors.black,
-            child: Center(
-              child: Hero(
-                transitionOnUserGestures: true,
-                tag: "smallImage$index",
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Card(
-                    elevation: 4,
-                    color: Colors.black,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          color: Colors.black,
-                          child: Image.asset(
-                            starWarsMemes[index],
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        MaterialButton(
-                          hoverColor: Colors.blueGrey,
-                          elevation: 8,
-                          enableFeedback: true,
-                          child: Icon(
-                            Icons.share_rounded,
-                            color: Colors.white,
-                          ),
-                          onLongPress: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "SHARE THIS MEME BY TAPPING THE ICON",
-                                ),
-                              ),
-                            );
-                          },
-                          onPressed: () async => await _shareimage(index),
-                        ),
-                      ],
+  Widget smallImage(int index) {
+    return FullScreenWidget(
+      backgroundIsTransparent: true,
+      child: SafeArea(
+        child: Container(
+          color: Colors.black,
+          child: Center(
+            child: Hero(
+              transitionOnUserGestures: true,
+              tag: "smallImage$index",
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      color: Colors.black,
+                      child: Image.asset(
+                        starWarsMemes[index],
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.elliptical(20, 25)),
+                      child: MaterialButton(
+                        hoverColor: Colors.blueGrey,
+                        elevation: 8,
+                        enableFeedback: true,
+                        child: Icon(
+                          Ionicons.send_outline,
+                          color: Colors.white,
+                        ),
+                        onLongPress: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "SHARE THIS MEME BY TAPPING THE ICON",
+                              ),
+                            ),
+                          );
+                        },
+                        onPressed: () async => await _shareimage(index),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
+
   Future<void> _shareimage(int index) async {
     try {
+      print('sharing');
       final ByteData bytes = await rootBundle.load(
         'assets/memes/${index + 1}.jpg',
       );
       await Share.file(
-        ' * Star Meme * ',
+        'Star Meme Number ${index + 1}',
         'meme${index}star.jpg',
         bytes.buffer.asUint8List(),
         'image/jpg',
