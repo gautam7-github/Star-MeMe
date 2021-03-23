@@ -163,7 +163,7 @@ class _HomeState extends State<Home> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                "SHARE THIS MEME BY TAPPING THE ICON",
+                                "Share This Meme By Tapping This Icon",
                               ),
                             ),
                           );
