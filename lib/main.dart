@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:ionicons/ionicons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,34 +63,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // list containing all the links to fetch images.
   final List starWarsMemes = [
-    "assets/memes/1.jpg",
-    "assets/memes/2.jpg",
-    "assets/memes/3.jpg",
-    "assets/memes/4.jpg",
-    "assets/memes/5.jpg",
-    "assets/memes/6.jpg",
-    "assets/memes/7.jpg",
-    "assets/memes/8.jpg",
-    "assets/memes/9.jpg",
-    "assets/memes/10.jpg",
-    "assets/memes/11.jpg",
-    "assets/memes/12.jpg",
-    "assets/memes/13.jpg",
-    "assets/memes/14.jpg",
-    "assets/memes/15.jpg",
-    "assets/memes/16.jpg",
-    "assets/memes/17.jpg",
-    "assets/memes/18.jpg",
-    "assets/memes/19.jpg",
-    "assets/memes/20.jpg",
-    "assets/memes/21.jpg",
-    "assets/memes/22.jpg",
-    "assets/memes/23.jpg",
-    "assets/memes/24.jpg",
-    "assets/memes/25.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/1.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/2.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/3.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/4.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/5.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/6.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/7.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/8.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/9.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/10.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/11.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/12.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/13.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/14.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/15.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/16.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/17.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/18.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/19.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/20.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/21.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/22.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/23.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/24.jpg",
+    "https://raw.githubusercontent.com/gautam7-github/assets/main/memes/25.jpg",
   ];
-  // 587D71 ED6A5A
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,6 +118,7 @@ class _HomeState extends State<Home> {
       ),
       body: SafeArea(
         child: ListView.builder(
+          scrollDirection: Axis.vertical,
           itemCount: starWarsMemes.length,
           itemBuilder: (BuildContext context, int index) {
             return smallImage(index);
@@ -131,47 +133,63 @@ class _HomeState extends State<Home> {
       backgroundIsTransparent: true,
       child: SafeArea(
         child: Container(
-          color: Colors.black,
+          padding: EdgeInsets.symmetric(
+            vertical: 18,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.black,
+          ),
           child: Center(
-            child: Hero(
-              transitionOnUserGestures: true,
-              tag: "smallImage$index",
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      color: Colors.black,
-                      child: Image.asset(
-                        starWarsMemes[index],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.elliptical(20, 25)),
-                      child: MaterialButton(
-                        hoverColor: Colors.blueGrey,
-                        elevation: 8,
-                        enableFeedback: true,
-                        child: Icon(
-                          Ionicons.send_outline,
-                          color: Colors.white,
+            child: Card(
+              color: Colors.black,
+              shadowColor: Colors.white,
+              elevation: 3,
+              child: Hero(
+                transitionOnUserGestures: true,
+                tag: "smallImage$index",
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        color: Colors.black,
+                        child: CachedNetworkImage(
+                          imageUrl: starWarsMemes[index],
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Icon(
+                            Ionicons.logo_electron,
+                            color: Colors.white,
+                          ),
                         ),
-                        onLongPress: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "Share This Meme By Tapping This Icon",
-                              ),
-                            ),
-                          );
-                        },
-                        onPressed: () async => await _shareimage(index),
                       ),
-                    ),
-                  ],
+                      ClipRRect(
+                        borderRadius:
+                            BorderRadius.all(Radius.elliptical(20, 25)),
+                        child: MaterialButton(
+                          hoverColor: Colors.blueGrey,
+                          elevation: 18,
+                          enableFeedback: true,
+                          child: Icon(
+                            Ionicons.send_outline,
+                            color: Colors.white,
+                          ),
+                          onLongPress: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Share This Meme By Tapping This Icon",
+                                ),
+                              ),
+                            );
+                          },
+                          onPressed: () async => await _shareimage(index),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
